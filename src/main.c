@@ -28,6 +28,9 @@ int main(void)
 
     SDL_Rect dst = {100, 100, w * 5, h * 5};
 
+    i8 animation_count = 0;
+
+
     int running = 1;
     SDL_Event e;
 
@@ -39,12 +42,16 @@ int main(void)
                 running = 0;
         }
 
+        animation_count = (animation_count + 1) % 64; 
+
         SDL_RenderClear(eng.renderer); // clears to black
 
-        draw_field(&state.field, eng.renderer);
+        draw_field(&state.field, eng.renderer, eng.window, animation_count);
 
-        SDL_RenderCopy(eng.renderer, sprite, NULL, &dst); // draws sprite
-        SDL_RenderPresent(eng.renderer);                  // shows the screen
+        SDL_RenderCopy(eng.renderer, sprite, NULL, &dst); 
+        SDL_RenderPresent(eng.renderer);  // shows the screen
+    
+        SDL_Delay(16); // ~60 FPS
     }
 
     SDL_DestroyTexture(sprite);
