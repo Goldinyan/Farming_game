@@ -15,21 +15,8 @@ int main(void)
         return 1;
     }
 
-    SDL_Texture *sprite = IMG_LoadTexture(eng.renderer, "public/Player1.png");
-    if (!sprite)
-    {
-        printf("Failed to load sprite: %s\n", IMG_GetError());
-        return 1;
-    }
-
-    int w, h;
-    SDL_QueryTexture(sprite, NULL, NULL, &w, &h);
-    // Gets the original width and height of the PNG.
-
-    SDL_Rect dst = {100, 100, w * 5, h * 5};
-
     i8 animation_count = 0;
-
+    i8 animation_speed = 0; // Change frame every 2 ticks
 
     int running = 1;
     SDL_Event e;
@@ -41,20 +28,21 @@ int main(void)
             if (e.type == SDL_QUIT)
                 running = 0;
         }
-
-        animation_count = (animation_count + 1) % 64; 
+        if (animation_speed++ >= 4)
+        {
+            animation_count = (animation_count + 1) % 64;
+            animation_speed = 0;
+        }
 
         SDL_RenderClear(eng.renderer); // clears to black
 
         draw_field(&state.field, eng.renderer, eng.window, animation_count);
 
-        SDL_RenderCopy(eng.renderer, sprite, NULL, &dst); 
-        SDL_RenderPresent(eng.renderer);  // shows the screen
-    
+        SDL_RenderPresent(eng.renderer); // shows the screen
+
         SDL_Delay(16); // ~60 FPS
     }
 
-    SDL_DestroyTexture(sprite);
     engine_destroy(&eng);
 
     return 0;
