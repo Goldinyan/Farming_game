@@ -19,8 +19,8 @@ void draw_field(field_t *field, SDL_Renderer *renderer, SDL_Window *window, i8 a
     const int r = field->radius;
 
     const int tile = 64;
-    const int offset_w = w / 2 - r * 64;
-    const int offset_h = h / 2 - r * 64;
+    const int offset_w = w / 2 - ((r - 1) * 64);
+    const int offset_h = h / 2 - ((r - 1) * 64);
 
     const int last = r + 1; // border index
 
@@ -77,7 +77,13 @@ void draw_field(field_t *field, SDL_Renderer *renderer, SDL_Window *window, i8 a
 
             // Top edge
             if (y == 0)
+            {
+                SDL_Texture *sprite = IMG_LoadTexture(renderer, "public/left_1.png");
+
+                SDL_RenderCopy(renderer, sprite, NULL, &dst);
+                SDL_DestroyTexture(sprite);
                 continue;
+            }
 
             // Left edge
             if (x == 0)
@@ -85,7 +91,13 @@ void draw_field(field_t *field, SDL_Renderer *renderer, SDL_Window *window, i8 a
 
             // Right edge
             if (y == last)
+            {
+                SDL_Texture *sprite = IMG_LoadTexture(renderer, "public/right_1.png");
+
+                SDL_RenderCopy(renderer, sprite, NULL, &dst);
+                SDL_DestroyTexture(sprite);
                 continue;
+            }
 
             /* -------------------------
                INNER FIELD (crops)
