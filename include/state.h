@@ -3,6 +3,10 @@
 
 #include "base_defs.h"
 
+typedef enum {
+    CLICK, HOVER, RIGHTCLICK,
+} mouse_type_t
+
 typedef enum
 {
     FARM,
@@ -35,6 +39,7 @@ typedef struct
 typedef struct
 {
     skill_t *skills;
+    i8 skill_lenght;
 } skills_t;
 
 typedef enum

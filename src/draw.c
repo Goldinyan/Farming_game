@@ -24,7 +24,7 @@ void draw_field(field_t *field, SDL_Renderer *renderer, SDL_Window *window, i8 a
 
     const int last = r + 1; // border index
 
-    // Preload static textures once
+    // Preload textures once
     SDL_Texture *bottom_left = IMG_LoadTexture(renderer, "public/bottom_left_1.png");
     SDL_Texture *bottom_right = IMG_LoadTexture(renderer, "public/bottom_right_1.png");
     SDL_Texture *empty_field = IMG_LoadTexture(renderer, "public/base_full_field1.png");
