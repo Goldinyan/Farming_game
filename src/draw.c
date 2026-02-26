@@ -11,40 +11,32 @@ char *get_random_outer(const char *base);
 
 void draw_field(field_t *field, SDL_Renderer *renderer, SDL_Window *window, i8 animation_count)
 {
-    int w, h;
-    SDL_GetWindowSize(window, &w, &h);
-
     draw_water(renderer, window, animation_count);
 
-    const int r = field->radius;
-
     const int tile = 64;
-    const int offset_w = w / 2 - ((r - 1) * 64);
-    const int offset_h = h / 2 - ((r - 1) * 64);
+    const int offset = 100;
 
+    const int r = field->radius;
     const int last = r + 1; // border index
 
-    // Preload textures once
+    // Preload static textures once
     SDL_Texture *bottom_left = IMG_LoadTexture(renderer, "public/bottom_left_1.png");
     SDL_Texture *bottom_right = IMG_LoadTexture(renderer, "public/bottom_right_1.png");
-    SDL_Texture *empty_field = IMG_LoadTexture(renderer, "public/base_full_field1.png");
 
     for (int x = 0; x <= last; x++)
     {
         for (int y = 0; y <= last; y++)
         {
-            SDL_Rect dst = {y * tile + offset_w, x * tile + offset_h, tile, tile};
-
-            /* -------------------------
-               CORNERS
-            ------------------------- */
+            SDL_Rect dst = {y * tile + offset, x * tile + offset, tile, tile};
 
             if (x == 0 && y == 0)
-                continue; // top-left (empty for now)
-
-            if (x == last && y == last)
             {
-                SDL_RenderCopy(renderer, bottom_right, NULL, &dst);
+
+                continue;
+            }
+
+            if (x == 0 && y == last)
+            {
                 continue;
             }
 
@@ -55,16 +47,15 @@ void draw_field(field_t *field, SDL_Renderer *renderer, SDL_Window *window, i8 a
             }
 
             if (x == last && y == last)
-                continue; // top-right (empty for now)
+            {
 
-            /* -------------------------
-               EDGES
-            ------------------------- */
+                SDL_RenderCopy(renderer, bottom_right, NULL, &dst);
+                continue;
+            }
 
-            // Bottom edge
             if (x == last)
             {
-                const char *path = (y % 3 == 0)
+                const char *path = (x % 3 == 0)
                                        ? "public/bottom_1.png"
                                        : "public/bottom_2.png";
 
@@ -85,9 +76,12 @@ void draw_field(field_t *field, SDL_Renderer *renderer, SDL_Window *window, i8 a
                 continue;
             }
 
-            // Left edge
+            // TOP
             if (x == 0)
+            {
+
                 continue;
+            }
 
             // Right edge
             if (y == last)
@@ -106,17 +100,22 @@ void draw_field(field_t *field, SDL_Renderer *renderer, SDL_Window *window, i8 a
             int cx = x - 1;
             int cy = y - 1;
 
-            // Safe indexing: crops is radius × radius
+            // Safe indexing bc crops is radius × radius
             crop_t crop = field->crops[cy * r + cx];
 
             switch (crop)
             {
             case EMPTY:
-                SDL_RenderCopy(renderer, empty_field, NULL, &dst);
+                SDL_Texture *sprite = IMG_LoadTexture(renderer, "public/base_full_field1.png");
+
+                SDL_RenderCopy(renderer, sprite, NULL, &dst);
+                SDL_DestroyTexture(sprite);
                 break;
             case WHEAT:
+                SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
                 break;
             default:
+                SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
                 break;
             }
         }
@@ -133,15 +132,15 @@ void draw_water(SDL_Renderer *renderer, SDL_Window *window, i8 animation_count)
     int w, h;
     SDL_GetWindowSize(window, &w, &h);
 
-    // int offset = animation_count;
+    int offset = animation_count;
 
     // offset = 0;
 
-    for (i8 x = -1; x < h / 64 + 2; x++)
+    for (i8 x = -1; x < h / WATER_SIZE + 2; x++)
     {
-        for (i8 y = -1; y < w / 64 + 2; y++)
+        for (i8 y = -1; y < w / WATER_SIZE + 2; y++)
         {
-            SDL_Rect dst = {y * 64, x * 64, 64, 64};
+            SDL_Rect dst = {y * WATER_SIZE + offset, x * WATER_SIZE, WATER_SIZE, WATER_SIZE};
             SDL_RenderCopy(renderer, sprite, NULL, &dst);
         }
     }

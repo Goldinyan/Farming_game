@@ -28,11 +28,8 @@ int main(void)
             if (e.type == SDL_QUIT)
                 running = 0;
         }
-        if (animation_speed++ >= 4)
-        {
-            animation_count = (animation_count + 1) % 64;
-            animation_speed = 0;
-        }
+
+        animation_count = (animation_count + 1) % WATER_SIZE;
 
         SDL_RenderClear(eng.renderer); // clears to black
 

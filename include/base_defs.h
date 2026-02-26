@@ -18,3 +18,5 @@ typedef double f64;
 #define FALSE 0
 
 #define SKILL_WIDTH 10
+
+#define WATER_SIZE 96

@@ -1,15 +1,14 @@
-#include "SDL2/SDL_render.h"
-#include "SDL2/SDL_video.h"
-#include "draw.h"
+
+#include "base_defs.h"
+#include "state.h"
+
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-
-
+/*
 void track_input(i8 x, i8 y, view_t view, mouse_type_t mouse_type, state_t *state)
 {
     if (view == SKILL_TREE)
@@ -30,8 +29,7 @@ void track_input(i8 x, i8 y, view_t view, mouse_type_t mouse_type, state_t *stat
                     show_hover(i);
                 }
 
-                if(mouse_type ==)
             }
         }
     }
-}
+}*/

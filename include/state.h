@@ -5,7 +5,7 @@
 
 typedef enum {
     CLICK, HOVER, RIGHTCLICK,
-} mouse_type_t
+} mouse_type_t;
 
 typedef enum
 {
@@ -14,7 +14,7 @@ typedef enum
     INVENTORY,
     SHOP,
     SETTINGS,
-    BARN
+    BARN,
 } view_t;
 
 typedef enum
@@ -39,7 +39,7 @@ typedef struct
 typedef struct
 {
     skill_t *skills;
-    i8 skill_lenght;
+    i8 lenght;
 } skills_t;
 
 typedef enum
