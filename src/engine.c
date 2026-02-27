@@ -17,6 +17,8 @@ int engine_init(Engine *eng, i32 width, i32 height, i32 fullscreen)
         return 0;
     }
 
+    TTF_Init();
+
     eng->window = SDL_CreateWindow(
         "x",
         SDL_WINDOWPOS_CENTERED,

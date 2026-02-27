@@ -1,10 +1,11 @@
 #include "draw.h"
 #include "SDL2/SDL_render.h"
 #include "SDL2/SDL_video.h"
-#include <stdio.h>
+#include "base_defs.h"
 #include "text.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <stdio.h>
 
 void draw_water(SDL_Renderer *renderer, SDL_Window *window, i8 animation_count);
 char *get_random_outer(const char *base);
@@ -13,13 +14,18 @@ void draw_field(field_t *field, SDL_Renderer *renderer, SDL_Window *window, i8 a
 {
     draw_water(renderer, window, animation_count);
 
-    draw_text(renderer, "public/Chillax-Medium.ttf", "HALLLLOOO", (SDL_Color) {50, 50, 50}, 50, 50);
+    draw_text(renderer, "public/Chillax-Medium.ttf", "HALLLLOOO", (SDL_Color){0, 0, 0, 255}, 50, 50);
 
-    const int tile = 64;
-    const int offset = 100;
+    int w, h;
+    SDL_GetWindowSize(window, &w, &h);
 
     const int r = field->radius;
     const int last = r + 1; // border index
+
+    const int tile = 64;
+
+    const int grid_size = (last + 1) * tile; // komplette Breite/Höhe
+    const int offset = grid_size / 2;        // Mittelpunkt
 
     // Preload static textures once
     SDL_Texture *bottom_left = IMG_LoadTexture(renderer, "public/bottom_left_1.png");
@@ -29,7 +35,11 @@ void draw_field(field_t *field, SDL_Renderer *renderer, SDL_Window *window, i8 a
     {
         for (int y = 0; y <= last; y++)
         {
-            SDL_Rect dst = {y * tile + offset, x * tile + offset, tile, tile};
+            SDL_Rect dst = {
+                y * tile + w / 2 - offset,
+                x * tile + h / 2 - offset,
+                tile,
+                tile};
 
             if (x == 0 && y == 0)
             {
@@ -104,14 +114,14 @@ void draw_field(field_t *field, SDL_Renderer *renderer, SDL_Window *window, i8 a
 
             // Safe indexing bc crops is radius × radius
             crop_t crop = field->crops[cy * r + cx];
+            SDL_Texture *sprite;
 
             switch (crop)
             {
             case EMPTY:
-                SDL_Texture *sprite = IMG_LoadTexture(renderer, "public/base_full_field1.png");
+                sprite = IMG_LoadTexture(renderer, "public/base_full_field1.png");
 
                 SDL_RenderCopy(renderer, sprite, NULL, &dst);
-                SDL_DestroyTexture(sprite);
                 break;
             case WHEAT:
                 SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
@@ -120,6 +130,8 @@ void draw_field(field_t *field, SDL_Renderer *renderer, SDL_Window *window, i8 a
                 SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
                 break;
             }
+
+            SDL_DestroyTexture(sprite);
         }
     }
 

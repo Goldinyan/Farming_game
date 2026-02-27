@@ -2,10 +2,33 @@
 #define STATE_H
 
 #include "base_defs.h"
+#include <SDL2/SDL.h>
 
-typedef enum {
-    CLICK, HOVER, RIGHTCLICK,
+typedef enum
+{
+    CLICK,
+    HOVER,
+    RIGHTCLICK,
 } mouse_type_t;
+
+typedef struct
+{
+    SDL_Rect rect;
+    void (*on_click)(void *userdata);
+    void *userdata;
+} button_t;
+
+/*for (int i = 0; i < button_count; i++) {
+    Button *b = &buttons[i];
+    if (mouse_x >= b->rect.x && mouse_x <= b->rect.x + b->rect.w &&
+        mouse_y >= b->rect.y && mouse_y <= b->rect.y + b->rect.h) {
+        b->on_click(b->userdata);
+        break;
+    }
+}
+
+  *
+  */
 
 typedef enum
 {
@@ -15,7 +38,7 @@ typedef enum
     SHOP,
     SETTINGS,
     BARN,
-} view_t;
+} view_type_t;
 
 typedef enum
 {
@@ -57,26 +80,32 @@ typedef struct
     i64 money;
 } currencies_t;
 
-typedef struct {
-  u8 id;
-  char *name;
-  char *description;
-  char *icon_path;
-  char unlocked;
-  char available;
-  u8 id_for_availability;
+typedef struct
+{
+    u8 id;
+    char *name;
+    char *description;
+    char *icon_path;
+    char unlocked;
+    char available;
+    u8 id_for_availability;
 
-  u32 strenght;
-  u8 area;
+    u32 strenght;
+    u8 area;
 
 } hoe_t;
 
-typedef struct {
-  i32 radius;
-  crop_t* crops;
-  
+typedef struct
+{
+    i32 radius;
+    crop_t *crops;
+
 } field_t;
 
+typedef struct {
+  view_type_t view_type;
+  button_t *buttons;
+} view_t;
 typedef struct
 {
     view_t view;
