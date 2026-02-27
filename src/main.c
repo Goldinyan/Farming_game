@@ -16,7 +16,6 @@ int main(void)
     }
 
     i8 animation_count = 0;
-    i8 animation_speed = 0; // Change frame every 2 ticks
 
     int running = 1;
     SDL_Event e;
@@ -29,8 +28,6 @@ int main(void)
                 running = 0;
         }
 
-        animation_count = (animation_count + 1) % WATER_SIZE;
-
         SDL_RenderClear(eng.renderer); // clears to black
 
         draw_field(&state.field, eng.renderer, eng.window, animation_count);
@@ -38,6 +35,8 @@ int main(void)
         SDL_RenderPresent(eng.renderer); // shows the screen
 
         SDL_Delay(16); // ~60 FPS
+
+        animation_count = (animation_count + 1) % WATER_SIZE;
     }
 
     engine_destroy(&eng);

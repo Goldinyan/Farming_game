@@ -2,7 +2,7 @@
 #include "SDL2/SDL_render.h"
 #include "SDL2/SDL_video.h"
 #include <stdio.h>
-
+#include "text.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
@@ -12,6 +12,8 @@ char *get_random_outer(const char *base);
 void draw_field(field_t *field, SDL_Renderer *renderer, SDL_Window *window, i8 animation_count)
 {
     draw_water(renderer, window, animation_count);
+
+    draw_text(renderer, "public/Chillax-Medium.ttf", "HALLLLOOO", (SDL_Color) {50, 50, 50}, 50, 50);
 
     const int tile = 64;
     const int offset = 100;
@@ -134,7 +136,7 @@ void draw_water(SDL_Renderer *renderer, SDL_Window *window, i8 animation_count)
 
     int offset = animation_count;
 
-    // offset = 0;
+    offset = 0;
 
     for (i8 x = -1; x < h / WATER_SIZE + 2; x++)
     {

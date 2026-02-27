@@ -5,7 +5,8 @@ CFLAGS = -Wall -Wextra -std=c11 -Iinclude -I/opt/homebrew/include \
 
 CFLAGS_PERF = -Wall -Wextra -std=c11 -Iinclude -I/opt/homebrew/include -O3
 
-LDFLAGS = -fsanitize=address -L/opt/homebrew/lib -lSDL2 -lSDL2_image
+LDFLAGS = -fsanitize=address -L/opt/homebrew/lib -lSDL2 -lSDL2_image -lSDL2_ttf
+
 
 LDFLAGS_PERF = -L/opt/homebrew/lib -lSDL2
 
