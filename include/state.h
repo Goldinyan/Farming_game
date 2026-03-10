@@ -14,8 +14,7 @@ typedef enum
 typedef struct
 {
     SDL_Rect rect;
-    void (*on_click)(void *userdata);
-    void *userdata;
+    void (*on_click)(void *state_t);
 } button_t;
 
 /*for (int i = 0; i < button_count; i++) {
